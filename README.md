@@ -174,6 +174,14 @@ DevOps-Accelerator-Project
 	- Do NOT run `terraform apply`locally.  
 	- Need all changes to go through CI/CD so we push to remote directly and apply will run through pipeline.
 
+#### Troubleshooting Terraform state lock errors
+
+The Terraform GitHub Actions workflow serializes runs to prevent concurrent applies from competing for the same remote state lock. If a run still reports `ConditionalCheckFailedException` from DynamoDB, another Terraform operation may currently hold the lock, or a previous operation may have ended without releasing it.
+
+- Check that no Terraform workflow run or local Terraform process using this backend is still active.
+- If an operation is active, let it finish; do not remove its lock.
+- If no operation is active, use the lock ID shown in the Terraform error and run `terraform force-unlock <LOCK_ID>` from `infra/terraform` after initializing the same backend. Only do this for a confirmed stale lock; do not delete the DynamoDB lock item manually.
+
 
 ### 3. GitHub Actions CI/CD
 
