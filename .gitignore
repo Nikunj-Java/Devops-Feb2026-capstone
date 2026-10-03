@@ -15,7 +15,7 @@ crash.*.log
 *.plan
 
 # Variable files containing secrets
-*.tfvars
+# *.tfvars
 *.tfvars.json
 
 # Allow example variable files
